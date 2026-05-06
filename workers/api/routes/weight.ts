@@ -111,4 +111,29 @@ app.get('/stats', async (c) => {
   })
 })
 
+// 获取趋势数据
+app.get('/trend', async (c) => {
+  const userId = c.get('jwtPayload').userId
+  const { days = 30 } = c.req.query()
+  const db = c.env.DB
+
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - Number(days))
+  const startDateStr = startDate.toISOString().split('T')[0]
+
+  const records = await db.prepare(`
+    SELECT record_date, weight, bmi FROM weight_records 
+    WHERE user_id = ? AND record_date >= ?
+    ORDER BY record_date ASC
+  `).bind(userId, startDateStr).all()
+
+  return c.json(
+    records.results.map((r: Record<string, unknown>) => ({
+      date: r.record_date,
+      weight: r.weight,
+      bmi: r.bmi,
+    }))
+  )
+})
+
 export default app
