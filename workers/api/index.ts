@@ -13,9 +13,18 @@ app.use('*', cors())
 app.route('/auth', authRoutes)
 
 // JWT 保护路由
-app.use('/weights/*', jwt({ secret: c.env.JWT_SECRET }))
-app.use('/goals/*', jwt({ secret: c.env.JWT_SECRET }))
-app.use('/settings/*', jwt({ secret: c.env.JWT_SECRET }))
+app.use('/weights/*', async (c, next) => {
+  const middleware = jwt({ secret: c.env.JWT_SECRET })
+  return middleware(c, next)
+})
+app.use('/goals/*', async (c, next) => {
+  const middleware = jwt({ secret: c.env.JWT_SECRET })
+  return middleware(c, next)
+})
+app.use('/settings/*', async (c, next) => {
+  const middleware = jwt({ secret: c.env.JWT_SECRET })
+  return middleware(c, next)
+})
 
 app.route('/weights', weightRoutes)
 app.route('/goals', goalRoutes)

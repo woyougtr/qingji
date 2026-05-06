@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { sign } from 'hono/jwt'
-import { hash, verify } from './services/auth'
+import { hash, verify } from '../services/auth'
 
 const app = new Hono()
 

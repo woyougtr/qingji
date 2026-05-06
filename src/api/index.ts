@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://qingji-api.1109438417.workers.dev'
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -27,7 +29,7 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken')
       if (refreshToken) {
         try {
-          const { data } = await axios.post('/api/auth/refresh', { refreshToken })
+          const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken })
           localStorage.setItem('accessToken', data.accessToken)
           error.config.headers.Authorization = `Bearer ${data.accessToken}`
           return api(error.config)
