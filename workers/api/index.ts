@@ -9,6 +9,20 @@ const app = new Hono()
 
 app.use('*', cors())
 
+// 根路由 - API 状态检查
+app.get('/', (c) => {
+  return c.json({
+    name: '轻记 API',
+    version: '1.0.0',
+    status: 'ok',
+    endpoints: {
+      auth: '/auth',
+      weights: '/weights',
+      goals: '/goals',
+    }
+  })
+})
+
 // 公开路由
 app.route('/auth', authRoutes)
 
