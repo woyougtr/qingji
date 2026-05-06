@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://qingji-api.1109438417.workers.dev'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://qingjiapi.6666521.xyz'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
