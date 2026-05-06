@@ -113,27 +113,36 @@ app.get('/stats', async (c) => {
 
 // 获取趋势数据
 app.get('/trend', async (c) => {
-  const userId = c.get('jwtPayload').userId
-  const { days = 30 } = c.req.query()
-  const db = c.env.DB
+  try {
+    const userId = c.get('jwtPayload')?.userId
+    if (!userId) {
+      return c.json({ error: '未授权' }, 401)
+    }
+    
+    const { days = 30 } = c.req.query()
+    const db = c.env.DB
 
-  const startDate = new Date()
-  startDate.setDate(startDate.getDate() - Number(days))
-  const startDateStr = startDate.toISOString().split('T')[0]
+    const startDate = new Date()
+    startDate.setDate(startDate.getDate() - Number(days))
+    const startDateStr = startDate.toISOString().split('T')[0]
 
-  const records = await db.prepare(`
-    SELECT record_date, weight, bmi FROM weight_records 
-    WHERE user_id = ? AND record_date >= ?
-    ORDER BY record_date ASC
-  `).bind(userId, startDateStr).all()
+    const records = await db.prepare(`
+      SELECT record_date, weight, bmi FROM weight_records 
+      WHERE user_id = ? AND record_date >= ?
+      ORDER BY record_date ASC
+    `).bind(userId, startDateStr).all()
 
-  return c.json(
-    records.results.map((r: Record<string, unknown>) => ({
-      date: r.record_date,
-      weight: r.weight,
-      bmi: r.bmi,
-    }))
-  )
+    return c.json(
+      records.results.map((r: Record<string, unknown>) => ({
+        date: r.record_date,
+        weight: r.weight,
+        bmi: r.bmi,
+      }))
+    )
+  } catch (err) {
+    console.error('Trend error:', err)
+    return c.json({ error: '获取趋势失败: ' + String(err) }, 500)
+  }
 })
 
 export default app
