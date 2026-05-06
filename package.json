@@ -1,0 +1,32 @@
+{
+  "name": "qingji",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vueuse/core": "^14.3.0",
+    "axios": "^1.16.0",
+    "echarts": "^6.0.0",
+    "hono": "^4.12.18",
+    "pinia": "^3.0.4",
+    "vant": "^4.9.24",
+    "vue": "^3.5.32",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.2.3",
+    "@types/node": "^24.12.2",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vue/tsconfig": "^0.9.1",
+    "typescript": "~6.0.2",
+    "unocss": "^66.6.8",
+    "vite": "^8.0.10",
+    "vue-tsc": "^3.2.7",
+    "wrangler": "^4.88.0"
+  }
+}
